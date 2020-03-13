@@ -1,6 +1,6 @@
 using System;
 
-namespace ProfileMS
+namespace ProfileMS.Models
 {
     public class Profile
     {

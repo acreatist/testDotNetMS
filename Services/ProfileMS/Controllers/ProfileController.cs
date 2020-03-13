@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using ProfileMS.Models;
 
 namespace ProfileMS.Controllers
 {
@@ -12,27 +13,19 @@ namespace ProfileMS.Controllers
     public class ProfileController : ControllerBase
     {
         private readonly ILogger<ProfileController> _logger;
+        private readonly ProfileDbContext _context;
 
-        private IEnumerable<Profile> _profiles;
-
-        public ProfileController(ILogger<ProfileController> logger)
+        public ProfileController(ILogger<ProfileController> logger, ProfileDbContext context)
         {
             _logger = logger;
-            _profiles = new List<Profile>();
-
-            for (int i = 0; i < 3; i++)
-            {
-                _profiles.Append(new Profile {
-                    Id = i,
-                    Name = " User" + i.ToString() 
-                });
-            }
+            _context = context;
         }
 
         [HttpGet]
-        public IEnumerable<Profile> GetAll()
+        public IActionResult GetAll()
         {
-            return _profiles;
+            List<Profile> profiles = _context.getProfiles();
+            return Ok(profiles);
         }
     }
 }

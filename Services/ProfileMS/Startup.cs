@@ -11,6 +11,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using ProfileMS.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.InMemory;
 
 namespace ProfileMS
 {
@@ -31,6 +34,9 @@ namespace ProfileMS
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
             });
+
+            services.AddDbContext<ProfileDbContext>(o => o.UseInMemoryDatabase("profileDB"));
+            services.AddScoped<ProfileDbContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,0 +1,10 @@
+version: '3'
+services: 
+  app:
+    container_name: docker-test-dotnetms
+    restart: always
+    build: 
+      context: .
+      dockerfile: Services/ProfileMS/Dockerfile
+    ports:
+      - '80:5000'
