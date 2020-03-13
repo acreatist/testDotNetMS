@@ -12,6 +12,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using ProfileMS.Models;
+using ProfileMS.Services;
+using ProfileMS.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.InMemory;
 
@@ -36,7 +38,8 @@ namespace ProfileMS
             });
 
             services.AddDbContext<ProfileDbContext>(o => o.UseInMemoryDatabase("profileDB"));
-            services.AddScoped<ProfileDbContext>();
+            services.AddScoped(typeof(IProfileRepository<>), typeof(ProfileRepository<>));
+            services.AddTransient(typeof(IProfileService), typeof(ProfileService));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

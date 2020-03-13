@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ProfileMS.Models;
+using ProfileMS.Services;
 
 namespace ProfileMS.Controllers
 {
@@ -13,19 +14,27 @@ namespace ProfileMS.Controllers
     public class ProfileController : ControllerBase
     {
         private readonly ILogger<ProfileController> _logger;
-        private readonly ProfileDbContext _context;
+        private readonly IProfileService _service;
 
-        public ProfileController(ILogger<ProfileController> logger, ProfileDbContext context)
+        public ProfileController(ILogger<ProfileController> logger, IProfileService service)
         {
             _logger = logger;
-            _context = context;
+            _service = service;
         }
 
         [HttpGet]
         public IActionResult GetAll()
         {
-            List<Profile> profiles = _context.getProfiles();
+            IEnumerable<Profile> profiles = _service.GetAll();
             return Ok(profiles);
+        }
+
+        [HttpPost]
+        [Route("create")]
+        public IActionResult Create([FromBody]Profile profile)
+        {
+            _service.Create(profile);
+            return Ok();
         }
     }
 }
